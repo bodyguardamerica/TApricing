@@ -9,7 +9,6 @@
 
     html, body {
       width: 100%;
-      height: 100%;
       background: #1a1a1a;
       font-family: Georgia, serif;
     }
@@ -40,14 +39,20 @@
       display: block;
     }
 
-    /* ── PDF frame ── */
-    #pdf-frame {
+    /* ── PDF canvas area ── */
+    #pdf-container {
       display: none;
-      position: fixed;
-      top: 120px; left: 0; right: 0; bottom: 0;
-      width: 100%;
-      height: calc(100% - 120px);
-      border: none;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 136px; /* header + 16px gap */
+      padding-bottom: 2rem;
+      gap: 12px;
+    }
+
+    #pdf-container canvas {
+      display: block;
+      max-width: 100%;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.5);
     }
 
     /* ── No-PDF message ── */
@@ -57,8 +62,8 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      position: fixed;
-      top: 120px; left: 0; right: 0; bottom: 0;
+      min-height: calc(100vh - 120px);
+      margin-top: 120px;
       gap: 1.2rem;
       padding: 2rem;
     }
@@ -87,7 +92,7 @@
     </a>
   </header>
 
-  <iframe id="pdf-frame" src="pricing.pdf#toolbar=0&navpanes=0&scrollbar=0" title="Price List"></iframe>
+  <div id="pdf-container"></div>
 
   <div id="no-pdf">
     <div class="icon">🎲</div>
@@ -95,18 +100,44 @@
     <p>Pricing info will be available here when we're set up at an event.</p>
   </div>
 
-  <script>
-    fetch('pricing.pdf', { method: 'HEAD' })
-      .then(res => {
-        if (res.ok) {
-          document.getElementById('pdf-frame').style.display = 'block';
-        } else {
-          document.getElementById('no-pdf').style.display = 'flex';
+  <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs" type="module"></script>
+  <script type="module">
+    import * as pdfjsLib from 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.min.mjs';
+
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.4.168/build/pdf.worker.min.mjs';
+
+    const container = document.getElementById('pdf-container');
+    const noPdf    = document.getElementById('no-pdf');
+
+    async function loadPDF() {
+      try {
+        const res = await fetch('pricing.pdf', { method: 'HEAD' });
+        if (!res.ok) throw new Error('not found');
+
+        const pdf = await pdfjsLib.getDocument('pricing.pdf').promise;
+        container.style.display = 'flex';
+
+        for (let i = 1; i <= pdf.numPages; i++) {
+          const page     = await pdf.getPage(i);
+          const viewport = page.getViewport({ scale: window.devicePixelRatio * 1.5 });
+
+          const canvas = document.createElement('canvas');
+          const ctx    = canvas.getContext('2d');
+          canvas.width  = viewport.width;
+          canvas.height = viewport.height;
+          canvas.style.width  = Math.min(viewport.width / window.devicePixelRatio, window.innerWidth - 8) + 'px';
+          canvas.style.height = 'auto';
+
+          await page.render({ canvasContext: ctx, viewport }).promise;
+          container.appendChild(canvas);
         }
-      })
-      .catch(() => {
-        document.getElementById('no-pdf').style.display = 'flex';
-      });
+      } catch {
+        noPdf.style.display = 'flex';
+      }
+    }
+
+    loadPDF();
   </script>
 
 </body>
