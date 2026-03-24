@@ -15,26 +15,26 @@
 
     /* ── Header ── */
     #site-header {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 120px;
+      position: sticky;
+      top: 0;
       background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 100;
       border-bottom: 2px solid #3a2e1e;
+      padding: 8px 12px;
     }
 
     #site-header a {
       display: flex;
       align-items: center;
-      height: 100%;
-      padding: 8px 16px;
     }
 
     #site-header img {
-      height: 100px;
+      height: auto;
+      max-height: 100px;
+      max-width: calc(100vw - 24px);
       width: auto;
       display: block;
     }
@@ -44,8 +44,7 @@
       display: none;
       flex-direction: column;
       align-items: center;
-      padding-top: 136px; /* header + 16px gap */
-      padding-bottom: 2rem;
+      padding: 16px 0 2rem;
       gap: 12px;
     }
 
@@ -62,8 +61,7 @@
       align-items: center;
       justify-content: center;
       text-align: center;
-      min-height: calc(100vh - 120px);
-      margin-top: 120px;
+      min-height: 60vh;
       gap: 1.2rem;
       padding: 2rem;
     }
