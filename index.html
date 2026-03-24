@@ -3,33 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pricing</title>
+  <title>Tabletop Armory — Pricing</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     html, body {
       width: 100%;
       height: 100%;
-      background: #fff;
+      background: #1a1a1a;
       font-family: Georgia, serif;
     }
 
-    #pdf-frame {
-      display: none;
-      width: 100%;
-      height: 100%;
-      border: none;
+    /* ── Header ── */
+    #site-header {
       position: fixed;
-      top: 0; left: 0;
+      top: 0; left: 0; right: 0;
+      height: 72px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      border-bottom: 2px solid #3a2e1e;
     }
 
+    #site-header a {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      padding: 6px 16px;
+    }
+
+    #site-header img {
+      height: 54px;
+      width: auto;
+      display: block;
+    }
+
+    /* ── PDF frame ── */
+    #pdf-frame {
+      display: none;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: calc(100% - 72px);
+      border: none;
+    }
+
+    /* ── No-PDF message ── */
     #no-pdf {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      height: 100vh;
+      position: fixed;
+      top: 72px; left: 0; right: 0; bottom: 0;
       gap: 1.2rem;
       padding: 2rem;
     }
@@ -39,7 +68,7 @@
     #no-pdf h2 {
       font-size: 2rem;
       font-weight: normal;
-      color: #4a4a4a;
+      color: #c8a97e;
     }
 
     #no-pdf p {
@@ -51,6 +80,12 @@
   </style>
 </head>
 <body>
+
+  <header id="site-header">
+    <a href="https://tabletoparmory.store" target="_blank" rel="noopener">
+      <img src="logo-banner.png" alt="Tabletop Armory" />
+    </a>
+  </header>
 
   <iframe id="pdf-frame" src="pricing.pdf#toolbar=0&navpanes=0&scrollbar=0" title="Price List"></iframe>
 
