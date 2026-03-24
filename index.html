@@ -7,60 +7,34 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #fff;
       font-family: Georgia, serif;
-      background: #faf8f4;
-      color: #2c2c2c;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
 
-    header {
-      width: 100%;
-      background: #2c2c2c;
-      color: #faf8f4;
-      padding: 1.2rem 2rem;
-      text-align: center;
-      letter-spacing: 0.08em;
-      font-size: 1.1rem;
-    }
-
-    #content {
-      flex: 1;
-      width: 100%;
-      max-width: 900px;
-      padding: 2rem 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* PDF viewer */
     #pdf-frame {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      border-radius: 4px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.12);
       display: none;
+      width: 100%;
+      height: 100%;
+      border: none;
+      position: fixed;
+      top: 0; left: 0;
     }
 
-    /* No-PDF message */
     #no-pdf {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
+      height: 100vh;
       gap: 1.2rem;
-      padding: 4rem 2rem;
+      padding: 2rem;
     }
 
-    #no-pdf .icon {
-      font-size: 3.5rem;
-    }
+    #no-pdf .icon { font-size: 3.5rem; }
 
     #no-pdf h2 {
       font-size: 2rem;
@@ -78,16 +52,12 @@
 </head>
 <body>
 
-  <header>Tabletop Tark &mdash; Pricing</header>
+  <iframe id="pdf-frame" src="pricing.pdf#toolbar=0&navpanes=0&scrollbar=0" title="Price List"></iframe>
 
-  <div id="content">
-    <iframe id="pdf-frame" src="pricing.pdf" title="Price List"></iframe>
-
-    <div id="no-pdf">
-      <div class="icon">🎲</div>
-      <h2>See you at the next show!</h2>
-      <p>Pricing info will be available here when we're set up at an event.</p>
-    </div>
+  <div id="no-pdf">
+    <div class="icon">🎲</div>
+    <h2>See you at the next show!</h2>
+    <p>Pricing info will be available here when we're set up at an event.</p>
   </div>
 
   <script>
